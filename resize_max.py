@@ -3,11 +3,11 @@ import os
 import numpy as np
 
 # List of image file names to resize
-image_names = ["flower1.png", "flower2.png", "flower3.png", "flower4.png", "bush.png", "bush2.png", "bush3.png", "bush4.png"]  # Add your image names here
+image_names = ["house2.png", "house3.png"]  # Add your image names here
 
 # Input and output folders
-input_folder = r"D:\Projects\My project (1)\OgImages"
-output_folder = r"D:\Projects\My project (1)\finImages"
+input_folder = r"D:\Projects\catday\OgImages"
+output_folder = r"D:\Projects\catday\finImages"
 
 # Max dimension size (e.g., 1080 pixels)
 max_dim = 1024

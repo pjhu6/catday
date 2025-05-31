@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 003d7176f919b93469a1c8fad3d986d1, type: 3}
-  m_Name: CrossyRoadsMission
+  m_Name: IntroMission
   m_EditorClassIdentifier: 
-  description: Cross scary road with cars
+  description: Play with the birdy
   title: To-do
-  id: crossy_roads
-  respawnPosition: {x: -19, y: 10, z: 88}
-  respawnPlayer: 1
+  id: play_bird
+  respawnPosition: {x: 0, y: 0, z: 0}
+  respawnPlayer: 0

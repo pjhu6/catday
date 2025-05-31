@@ -15,7 +15,6 @@ public class DialogueData : ScriptableObject
 [Serializable]
 public class DialogueLine
 {
-    public Sprite speakerImage;
     public string speakerName;
     public string line;
 }

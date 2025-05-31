@@ -7,4 +7,5 @@ public class MissionData : ScriptableObject
     public string title;
     public string id;
     public Vector3 respawnPosition;
+    public bool respawnPlayer = false;
 }

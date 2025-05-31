@@ -99,7 +99,7 @@ public class MissionManager : MonoBehaviour
             missionTitle.text = lastCompleted.title;
             missionDescription.text = lastCompleted.description;
 
-            if (lastCompleted.respawnPosition != Vector3.zero)
+            if (lastCompleted.respawnPlayer && lastCompleted.respawnPosition != Vector3.zero)
             {
                 yield return new WaitForSeconds(0.1f);
                 TeleportPlayer(lastCompleted.respawnPosition);
@@ -152,6 +152,37 @@ public class MissionManager : MonoBehaviour
         }
 
         missionCanvas.alpha = 1f;
+    }
+
+    public void DisplayMissionPanel()
+    {
+        // enable the mission panel with the fade in effect
+        if (missionCanvas != null)
+        {
+            StartCoroutine(FadeInMissionPanel());
+        }
+    }
+
+    private IEnumerator FadeInMissionPanel()
+    {
+        missionCanvas.alpha = 0f;
+        missionCanvas.gameObject.SetActive(true);
+
+        for (float t = 0f; t <= 1f; t += Time.deltaTime)
+        {
+            missionCanvas.alpha = t;
+            yield return null;
+        }
+
+        missionCanvas.alpha = 1f;
+    }
+
+    public void HideMissionPanel()
+    {
+        if (missionCanvas != null)
+        {
+            missionCanvas.gameObject.SetActive(false);
+        }
     }
 
     public void TeleportPlayer(Vector3 position)

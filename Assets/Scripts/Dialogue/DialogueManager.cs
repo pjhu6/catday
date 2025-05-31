@@ -21,6 +21,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private float fadeDelay = 0.5f;
     [SerializeField] private float letterDelay = 0.05f;
+    [SerializeField] private float pauseDelay = 0.1f;
 
     public float dialogueCooldown = 0.2f;
 
@@ -86,7 +87,6 @@ public class DialogueManager : MonoBehaviour
             StartCoroutine(TypeAnimation(currentLine.line));
 
             // Set speaker image and name
-            speakerImage.sprite = currentLine.speakerImage;
             speakerNameText.text = currentLine.speakerName;
 
             // Play audio if available
@@ -171,6 +171,12 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         foreach (char c in line)
         {
+            // Use carat to indicate a pause in the dialogue
+            if (c == '^')
+            {
+                yield return new WaitForSeconds(pauseDelay);
+                continue; // Skip the pause character
+            }
             dialogueText.text += c;
             yield return new WaitForSeconds(letterDelay); // Adjust typing speed here
         }

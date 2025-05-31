@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: FishMarketMission
   m_EditorClassIdentifier: 
   description: Go the the fish market
-  title: Fish Market
+  title: To-do
   id: fish_market
+  respawnPosition: {x: 0, y: 0, z: 0}
+  respawnPlayer: 0

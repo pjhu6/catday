@@ -33,9 +33,15 @@ public class BirdInteractable : AbstractInteractable
         numHits++;
         if (numHits == 3)
         {
-            Debug.Log("Hit more than 3 times - triggering dialogue");
-            dialogueObject.TriggerDialogue();
+            StartCoroutine(CompleteMissionAfterDialogue());
         }
+    }
+
+    private IEnumerator CompleteMissionAfterDialogue()
+    {
+        dialogueObject.TriggerDialogue();
+        yield return new WaitUntil(() => !DialogueManager.Instance.IsDialogueActive);
+        MissionManager.Instance.CompleteMission("play_bird");
     }
 
     public override void Interact()
