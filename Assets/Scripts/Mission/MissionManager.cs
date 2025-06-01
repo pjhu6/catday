@@ -11,10 +11,12 @@ public class MissionManager : MonoBehaviour
     public static MissionManager Instance { get; private set; }
 
     [SerializeField] private CanvasGroup missionCanvas;
+    [SerializeField] private CanvasGroup missionTextCanvas;
     [SerializeField] private TMP_Text missionDescription;
     [SerializeField] private TMP_Text missionTitle;
     [SerializeField] private Image checkboxImage;
     [SerializeField] private CanvasGroup checkboxCanvasGroup;
+    [SerializeField] private float completedMissionDelay = 1f;
 
     [SerializeField] private List<MissionData> remainingMissions;
 
@@ -56,12 +58,14 @@ public class MissionManager : MonoBehaviour
         if (scene.name == "MainScene")
         {
             // Refresh UI references if they're missing
-            if (missionTitle == null)
-                missionTitle = GameObject.Find("MissionTitleText")?.GetComponent<TMP_Text>();
+            // if (missionTitle == null)
+            //     missionTitle = GameObject.Find("MissionTitleText")?.GetComponent<TMP_Text>();
             if (missionDescription == null)
                 missionDescription = GameObject.Find("MissionDescriptionText")?.GetComponent<TMP_Text>();
             if (missionCanvas == null)
                 missionCanvas = GameObject.Find("MissionsPanel")?.GetComponent<CanvasGroup>();
+            if (missionTextCanvas == null)
+                missionTextCanvas = GameObject.Find("MissionsTextPanel")?.GetComponent<CanvasGroup>();
             if (checkboxImage == null)
                 checkboxImage = GameObject.Find("MissionCheckboxImage")?.GetComponent<Image>();
             if (checkboxCanvasGroup == null)
@@ -88,6 +92,8 @@ public class MissionManager : MonoBehaviour
 
     private void UpdateMissionText()
     {
+        checkboxImage.enabled = false;
+        checkboxCanvasGroup.alpha = 0f;
         StartCoroutine(AnimateMissionUpdate());
     }
 
@@ -96,7 +102,7 @@ public class MissionManager : MonoBehaviour
         if (completedMissions.Count > 0)
         {
             MissionData lastCompleted = completedMissions[completedMissions.Count - 1];
-            missionTitle.text = lastCompleted.title;
+            // missionTitle.text = lastCompleted.title;
             missionDescription.text = lastCompleted.description;
 
             if (lastCompleted.respawnPlayer && lastCompleted.respawnPosition != Vector3.zero)
@@ -111,20 +117,21 @@ public class MissionManager : MonoBehaviour
                 checkboxImage.enabled = true;
                 checkboxCanvasGroup.alpha = 0f;
 
-                for (float t = 0f; t <= 1f; t += Time.deltaTime * 2)
+                for (float t = 0f; t <= 1f; t += Time.deltaTime * 1.5f)
                 {
                     checkboxCanvasGroup.alpha = t;
                     yield return null;
                 }
-                // checkboxCanvasGroup.alpha = 1f;
+                checkboxCanvasGroup.alpha = missionTextCanvas.alpha;
             }
 
+            yield return new WaitForSeconds(completedMissionDelay);
 
             // Fade out mission panel
-            float initialAlpha = missionCanvas.alpha;
-            for (float t = initialAlpha; t >= 0f; t -= Time.deltaTime / 1.5f)
+            float initialAlpha = missionTextCanvas.alpha;
+            for (float t = initialAlpha; t >= 0f; t -= Time.deltaTime / 2)
             {
-                missionCanvas.alpha = t;
+                missionTextCanvas.alpha = t;
                 checkboxCanvasGroup.alpha = t;
                 yield return null;
             }
@@ -135,7 +142,7 @@ public class MissionManager : MonoBehaviour
         // Update to next mission
         if (remainingMissions.Count > 0)
         {
-            missionTitle.text = remainingMissions[0].title;
+            // missionTitle.text = remainingMissions[0].title;
             missionDescription.text = remainingMissions[0].description;
         }
         else
@@ -147,11 +154,11 @@ public class MissionManager : MonoBehaviour
         // Fade in mission panel
         for (float t = 0f; t <= 1f; t += Time.deltaTime)
         {
-            missionCanvas.alpha = t;
+            missionTextCanvas.alpha = t;
             yield return null;
         }
 
-        missionCanvas.alpha = 1f;
+        missionTextCanvas.alpha = 1f;
     }
 
     public void DisplayMissionPanel()
@@ -197,5 +204,10 @@ public class MissionManager : MonoBehaviour
                 playerController.TeleportTo(worldPosition);
             }
         }
+    }
+
+    public bool IsMissionCompleted(string missionId)
+    {
+        return completedMissions.Exists(m => m.id == missionId);
     }
 }

@@ -13,4 +13,10 @@ public class TriggerCrossyRoadsInteractabke : AbstractInteractable
         Debug.Log("Switching to Crossy Roads scene");
         SceneManager.LoadScene("CrossyRoads");
     }
+
+    public override bool IsInteractable()
+    {
+        // Only if bird mission is completed
+        return MissionManager.Instance.IsMissionCompleted("play_bird");
+    }
 }

@@ -52,6 +52,9 @@ TagManager:
   - name: Foreground
     uniqueID: 1263186537
     locked: 0
+  - name: Outline
+    uniqueID: 4253089083
+    locked: 0
   - name: Interactable
     uniqueID: 359487267
     locked: 0

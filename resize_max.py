@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 # List of image file names to resize
-image_names = ["house2.png", "house3.png"]  # Add your image names here
+image_names = ["box6.png", "boxcat.png"]  # Add your image names here
 
 # Input and output folders
 input_folder = r"D:\Projects\catday\OgImages"
@@ -48,6 +48,7 @@ for image_name in image_names:
     print(f"Cropped dimensions: {width}x{height}")
 
     scale = max_dim / max(height, width)
+    print(f"Scale factor: {scale:.2f}")
     if scale >= 1.0:
         resized = cropped
     else:

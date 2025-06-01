@@ -4,6 +4,10 @@ public abstract class AbstractInteractable : AbstractPlayerFacer
 {
     public abstract void Click();
     public abstract void Interact();
+    public virtual bool IsInteractable()
+    {
+        return true;
+    }
 
     // void Update()
     // {   

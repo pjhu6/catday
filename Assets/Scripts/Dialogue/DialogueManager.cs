@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private TMP_Text speakerNameText;
-    [SerializeField] private Image speakerImage;
+    [SerializeField] private Image nextImage;
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private GameObject cutscenePanel;
@@ -44,6 +45,7 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
         setActive(false);
         dialogueEndTime = Time.time;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
@@ -84,7 +86,8 @@ public class DialogueManager : MonoBehaviour
         if (currentLineIndex < currentLines.Length)
         {
             DialogueLine currentLine = currentLines[currentLineIndex];
-            StartCoroutine(TypeAnimation(currentLine.line));
+            bool isLastLine = currentLineIndex == currentLines.Length - 1;
+            StartCoroutine(TypeAnimation(currentLine.line, isLastLine));
 
             // Set speaker image and name
             speakerNameText.text = currentLine.speakerName;
@@ -123,9 +126,9 @@ public class DialogueManager : MonoBehaviour
     {
         setActive(false);
         cutscenePanel.SetActive(false);
-        speakerImage.sprite = null;
         speakerNameText.text = "";
         dialogueText.text = "";
+        nextImage.enabled = false;
         // Set the next time actions can be performed
         dialogueEndTime = Time.time + dialogueCooldown;
     }
@@ -165,8 +168,9 @@ public class DialogueManager : MonoBehaviour
         isInFade = false;
     }
 
-    private IEnumerator TypeAnimation(string line)
+    private IEnumerator TypeAnimation(string line, bool isLastLine)
     {
+        nextImage.enabled = false;
         isInDialogueAnimation = true;
         dialogueText.text = "";
         foreach (char c in line)
@@ -180,7 +184,40 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += c;
             yield return new WaitForSeconds(letterDelay); // Adjust typing speed here
         }
+        // make nextImage bob up and down repeatedly until next line is shown
+        if (!isLastLine)
+        {
+            StartCoroutine(DoNextImageAnimation());
+        }
+        
         isInDialogueAnimation = false;
+    }
+
+    private IEnumerator DoNextImageAnimation()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        nextImage.enabled = true;
+        Vector3 originalPosition = nextImage.transform.localPosition;
+        float bobHeight = 3f;
+        float bobSpeed = 5f;
+        float elapsedTime = 0f;
+
+        while (IsDialogueActive && !isInFade && nextImage.enabled)
+        {
+            // Bob the image up and down
+            if (elapsedTime >= Mathf.PI * 2) // Reset after a full cycle
+            {
+                elapsedTime = 0f;
+            }
+            elapsedTime += Time.deltaTime * bobSpeed;
+            float newY = originalPosition.y + Mathf.Sin(elapsedTime) * bobHeight;
+            nextImage.transform.localPosition = new Vector3(originalPosition.x, newY, originalPosition.z);
+            yield return null;
+        }
+
+        // Reset position when dialogue ends or is inactive
+        nextImage.transform.localPosition = originalPosition;
     }
     
     public bool InDialogue()

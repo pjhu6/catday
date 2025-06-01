@@ -5,7 +5,7 @@ public abstract class AbstractPlayerFacer : MonoBehaviour
     public bool isFlipped = false;
     public bool isEnabled = true;
 
-    void Update()
+    protected void Update()
     {   
         if (!isEnabled)
         {

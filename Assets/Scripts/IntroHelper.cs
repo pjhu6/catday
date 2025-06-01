@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class IntroHelper : MonoBehaviour
 {
     public static IntroHelper Instance { get; private set; }
 
     public DialogueData dialogueData;
+    public Boolean skipIntro = false;
 
     private void Awake()
     {
@@ -20,16 +22,22 @@ public class IntroHelper : MonoBehaviour
 
     void Start()
     {
+        if (skipIntro)
+        {
+            MissionManager.Instance.DisplayMissionPanel();
+            return;
+        }
+
         // Disable mission initially, just for the intro
         MissionManager.Instance.HideMissionPanel();
 
         DialogueManager.Instance.StartDialogue(dialogueData);
         
         // Wait until the dialogue is finished before displaying the mission panel
-        StartCoroutine(WaitForDialogueEnd());
+        StartCoroutine(ShowMissionsAfterIntro());
     }
 
-    private IEnumerator WaitForDialogueEnd()
+    private IEnumerator ShowMissionsAfterIntro()
     {
         yield return new WaitUntil(() => !DialogueManager.Instance.IsDialogueActive);
         MissionManager.Instance.DisplayMissionPanel();
