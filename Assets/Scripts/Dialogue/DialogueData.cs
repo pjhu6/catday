@@ -10,6 +10,7 @@ public class DialogueData : ScriptableObject
     public CutsceneImages[] cutsceneImages;
 
     public CutsceneAudio[] cutsceneAudios;
+    public AudioClip backgroundMusic;
 }
 
 [Serializable]
@@ -24,6 +25,10 @@ public class CutsceneImages
 {
     public int dialogueStartIndex;
     public Sprite image;
+    public Sprite secondaryImage;
+    public float alternateDuration;
+    public bool isAutoplay;
+    public float autoplayDuration;
 }
 
 [Serializable]

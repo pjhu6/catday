@@ -36,15 +36,27 @@ public class CatBoxInteractable : AbstractInteractable
         {
             // Assign the texture to the material's base map (_BaseMap or _MainTex)
             materialInstance.SetTexture("_BaseMap", catOutTexture);
-            // If your shader uses _MainTex instead, use:
-            // materialInstance.SetTexture("_MainTex", catOutTexture);
         }
         else
         {
             Debug.LogWarning("Material instance or catOutTexture is missing!");
         }
 
+        StartCoroutine(TriggerDialogueAndCompleteMission());
+    }
+
+    public override bool IsInteractable()
+    {
+        // Only if park mission is completed
+        return MissionManager.Instance.IsMissionCompleted("explore_park") && 
+               !MissionManager.Instance.IsMissionCompleted("boxcat");
+    }
+
+    private System.Collections.IEnumerator TriggerDialogueAndCompleteMission()
+    {
         dialogueObject.TriggerDialogue();
+        yield return new WaitUntil(() => !DialogueManager.Instance.IsDialogueActive);
+        MissionManager.Instance.CompleteMission("boxcat");
     }
 
     public string[] GetDialogues()

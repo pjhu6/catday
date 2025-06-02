@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003d7176f919b93469a1c8fad3d986d1, type: 3}
   m_Name: FishMarketMission
   m_EditorClassIdentifier: 
-  description: Go the the fish market
-  title: To-do
+  description: Find a snack for two hungry cats.
   id: fish_market
   respawnPosition: {x: 0, y: 0, z: 0}
   respawnPlayer: 0

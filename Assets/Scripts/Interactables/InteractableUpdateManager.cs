@@ -23,6 +23,15 @@ public class InteractableManager : MonoBehaviour
 
     void Update()
     {
+        if (DialogueManager.Instance.InDialogue() || DialogueManager.Instance.IsInCutscene())
+        {
+            if (pointerPrefab.activeSelf)
+            {
+                pointerPrefab.SetActive(false);
+            }
+            return;
+        }
+
         AbstractInteractable closestInteractable = null;
         float closestDistance = float.MaxValue;
 
@@ -40,7 +49,6 @@ public class InteractableManager : MonoBehaviour
 
         if (closestInteractable != null)
         {
-            Debug.Log($"Closest interactable: {closestInteractable.name}");
             // If player is in range, move the pointerPrefab above the interactable
             Vector3 topOfQuad = GetTopOfQuad(closestInteractable.gameObject);
 

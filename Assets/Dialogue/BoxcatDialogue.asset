@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece1631143f0f534389f4f6d71cb15e0, type: 3}
+  m_Name: BoxcatDialogue
+  m_EditorClassIdentifier: 
+  dialogueLines:
+  - speakerName: Boxcat
+    line: BOO!^^ Excuse me, this is my territory.^ Boxcat land.^ What are you doing
+      rummaging through my possessions?
+  - speakerName: Cat
+    line: "Thank goodness there\u2019s someone here.^ Please tell me there\u2019s
+      something to eat in Boxcat land."
+  - speakerName: Boxcat
+    line: "I hate to tell you this but\u2026^^ (stomach growls)."
+  - speakerName: Boxcat
+    line: "There\u2019s nothing ma\u2019am.^ I\u2019ve been searching all morning.^
+      Boxcat has checked everywhere except for this one last trash can."
+  - speakerName: Boxcat
+    line: "Let\u2019s see what we can find, I\u2019ll let you do the honors."
+  - speakerName: Cat
+    line: "Don\u2019t worry Boxcat, these magic paws have never failed me before.^
+      Leave it to me!"
+  cutsceneImages: []
+  cutsceneAudios: []

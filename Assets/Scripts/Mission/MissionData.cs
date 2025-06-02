@@ -4,7 +4,6 @@ using UnityEngine;
 public class MissionData : ScriptableObject
 {
     public string description;
-    public string title;
     public string id;
     public Vector3 respawnPosition;
     public bool respawnPlayer = false;

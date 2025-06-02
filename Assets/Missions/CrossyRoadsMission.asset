@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003d7176f919b93469a1c8fad3d986d1, type: 3}
   m_Name: CrossyRoadsMission
   m_EditorClassIdentifier: 
-  description: Cross scary road with cars
-  title: To-do
+  description: Cross the scary street
   id: crossy_roads
   respawnPosition: {x: -19, y: 10, z: 88}
   respawnPlayer: 1

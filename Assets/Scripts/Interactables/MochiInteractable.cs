@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MochiInteractable : AbstractInteractable
 {
+    public DialogueData dialogueData;
+
     public override void Click()
     {
         Debug.Log("Mochi clicked");
@@ -9,6 +11,6 @@ public class MochiInteractable : AbstractInteractable
 
     public override void Interact()
     {
-        Debug.Log("Interacting with Mochi");
+        DialogueManager.Instance.StartDialogue(dialogueData);
     }
 }

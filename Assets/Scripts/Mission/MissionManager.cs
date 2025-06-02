@@ -57,20 +57,17 @@ public class MissionManager : MonoBehaviour
     {
         if (scene.name == "MainScene")
         {
-            // Refresh UI references if they're missing
-            // if (missionTitle == null)
-            //     missionTitle = GameObject.Find("MissionTitleText")?.GetComponent<TMP_Text>();
-            if (missionDescription == null)
-                missionDescription = GameObject.Find("MissionDescriptionText")?.GetComponent<TMP_Text>();
-            if (missionCanvas == null)
-                missionCanvas = GameObject.Find("MissionsPanel")?.GetComponent<CanvasGroup>();
-            if (missionTextCanvas == null)
-                missionTextCanvas = GameObject.Find("MissionsTextPanel")?.GetComponent<CanvasGroup>();
-            if (checkboxImage == null)
-                checkboxImage = GameObject.Find("MissionCheckboxImage")?.GetComponent<Image>();
-            if (checkboxCanvasGroup == null)
-                checkboxCanvasGroup = checkboxImage?.GetComponent<CanvasGroup>();
-            UpdateMissionText();
+            Debug.Log("MainScene loaded, enabling mission canvas.");
+            missionCanvas.enabled = true;
+            missionCanvas.alpha = 1f;
+            missionCanvas.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.Log($"Scene {scene.name} loaded, disabling mission canvas.");
+            missionCanvas.enabled = false;
+            missionCanvas.alpha = 0f;
+            missionCanvas.gameObject.SetActive(false);
         }
     }
 
@@ -111,7 +108,8 @@ public class MissionManager : MonoBehaviour
                 TeleportPlayer(lastCompleted.respawnPosition);
             }
 
-            // Show and fade in checkbox
+            // Wait a bit, then show and fade in checkbox
+            yield return new WaitForSeconds(1f);
             if (checkboxImage != null && checkboxCanvasGroup != null)
             {
                 checkboxImage.enabled = true;
@@ -129,7 +127,7 @@ public class MissionManager : MonoBehaviour
 
             // Fade out mission panel
             float initialAlpha = missionTextCanvas.alpha;
-            for (float t = initialAlpha; t >= 0f; t -= Time.deltaTime / 2)
+            for (float t = initialAlpha; t >= 0f; t -= Time.deltaTime / 1.5f)
             {
                 missionTextCanvas.alpha = t;
                 checkboxCanvasGroup.alpha = t;

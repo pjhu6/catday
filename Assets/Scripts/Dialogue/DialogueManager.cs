@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
-using Unity.VisualScripting;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMP_Text speakerNameText;
     [SerializeField] private Image nextImage;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource backgroundAudioSource;
 
     [SerializeField] private GameObject cutscenePanel;
     [SerializeField] private Image cutsceneImage;
@@ -30,10 +30,19 @@ public class DialogueManager : MonoBehaviour
     private int currentLineIndex;
     private CutsceneImages[] cutsceneImages;
     private CutsceneAudio[] cutsceneAudios;
+    private AudioClip backgroundMusic;
     private bool isInFade = false;
     private bool isInDialogueAnimation = false;
 
     private float dialogueEndTime;
+
+    private Coroutine cutsceneImageSwapCoroutine;
+    private Coroutine autoplayCoroutine;
+    private Sprite currentCutsceneImage;
+    private Sprite currentSecondaryImage;
+    private float currentAlternateDuration = 1f;
+    private bool isAlternatingCutsceneImage = false;
+    private bool isInCutscene = false;
 
     private void Awake()
     {
@@ -50,16 +59,15 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        // Show next line on space or mouse click
         if (IsDialogueActive
-        && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-        && !isInFade
-        && !isInDialogueAnimation)
+            && autoplayCoroutine == null
+            && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            && !isInFade
+            && !isInDialogueAnimation)
         {
             ShowNextLine();
         }
     }
-
 
     public void StartDialogue(DialogueData data)
     {
@@ -67,10 +75,10 @@ public class DialogueManager : MonoBehaviour
         currentLines = data.dialogueLines;
         cutsceneImages = data.cutsceneImages;
         cutsceneAudios = data.cutsceneAudios;
+        backgroundMusic = data.backgroundMusic;
 
         setActive(true);
 
-        // If there's a cutscene to show, do the fade-in effect
         if (cutsceneImages.Length > 0)
         {
             StartCoroutine(FadeInFromBlack());
@@ -83,37 +91,97 @@ public class DialogueManager : MonoBehaviour
 
     public void ShowNextLine()
     {
+        // If first line, start background music
+        if (currentLineIndex == 0 && backgroundMusic != null && !backgroundAudioSource.isPlaying)
+        {
+            backgroundAudioSource.clip = backgroundMusic;
+            backgroundAudioSource.loop = true;
+            backgroundAudioSource.Play();
+        }
+
+        if (autoplayCoroutine != null)
+            {
+                StopCoroutine(autoplayCoroutine);
+                autoplayCoroutine = null;
+            }
+
         if (currentLineIndex < currentLines.Length)
         {
             DialogueLine currentLine = currentLines[currentLineIndex];
             bool isLastLine = currentLineIndex == currentLines.Length - 1;
-            StartCoroutine(TypeAnimation(currentLine.line, isLastLine));
 
-            // Set speaker image and name
+            dialoguePanel.SetActive(!string.IsNullOrEmpty(currentLine.line));
             speakerNameText.text = currentLine.speakerName;
 
-            // Play audio if available
+            if (!string.IsNullOrEmpty(currentLine.line))
+            {
+                StartCoroutine(TypeAnimation(currentLine.line, isLastLine));
+            }
+
+            AudioClip nextClip = null;
             foreach (var cutscene in cutsceneAudios)
             {
                 if (cutscene.dialogueStartIndex == currentLineIndex)
                 {
-                    audioSource.clip = cutscene.audio;
-                    audioSource.Play();
+                    nextClip = cutscene.audio;
                     break;
                 }
             }
 
-            // Check if there is a cutscene to show
+            if (nextClip != null)
+            {
+                Debug.Log("Playing audio for line: " + currentLineIndex);
+                audioSource.clip = nextClip;
+                audioSource.Play();
+            }
+
+            CutsceneImages matchedCutscene = null;
             foreach (var cutscene in cutsceneImages)
             {
                 if (cutscene.dialogueStartIndex == currentLineIndex)
                 {
+                    matchedCutscene = cutscene;
                     cutscenePanel.SetActive(true);
-                    cutsceneImage.sprite = cutscene.image;
-                    Debug.Log("Showing cutscene image: " + currentLineIndex);
+
+                    if (cutscene.secondaryImage != null)
+                    {
+                        currentCutsceneImage = cutscene.image;
+                        currentSecondaryImage = cutscene.secondaryImage;
+                        currentAlternateDuration = Mathf.Max(0.1f, cutscene.alternateDuration);
+                        isAlternatingCutsceneImage = true;
+
+                        if (cutsceneImageSwapCoroutine != null)
+                            StopCoroutine(cutsceneImageSwapCoroutine);
+
+                        cutsceneImageSwapCoroutine = StartCoroutine(AlternateCutsceneImage());
+                    }
+                    else
+                    {
+                        isAlternatingCutsceneImage = false;
+                        if (cutsceneImageSwapCoroutine != null)
+                            StopCoroutine(cutsceneImageSwapCoroutine);
+                        cutsceneImage.sprite = cutscene.image;
+                    }
                     break;
                 }
             }
+
+            if (matchedCutscene == null)
+            {
+                isAlternatingCutsceneImage = false;
+                if (cutsceneImageSwapCoroutine != null)
+                {
+                    StopCoroutine(cutsceneImageSwapCoroutine);
+                    cutsceneImageSwapCoroutine = null;
+                }
+            }
+
+            if (matchedCutscene != null && matchedCutscene.isAutoplay)
+            {
+                float waitTime = Mathf.Max(0.1f, matchedCutscene.autoplayDuration);
+                autoplayCoroutine = StartCoroutine(AutoplayNextLineAfterDelay(waitTime, isLastLine));
+            }
+
             currentLineIndex++;
         }
         else
@@ -122,14 +190,57 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private IEnumerator AutoplayNextLineAfterDelay(float delay, bool isLastLine)
+    {
+        yield return new WaitForSeconds(delay);
+        autoplayCoroutine = null;
+
+        if (isLastLine)
+        {
+            EndDialogue();
+        }
+        else
+        {
+            ShowNextLine();
+        }
+    }
+
     private void EndDialogue()
     {
+        if (cutscenePanel.activeSelf)
+        {
+            cutscenePanel.SetActive(false);
+            MissionManager.Instance.DisplayMissionPanel();
+        }
+
         setActive(false);
-        cutscenePanel.SetActive(false);
         speakerNameText.text = "";
         dialogueText.text = "";
         nextImage.enabled = false;
-        // Set the next time actions can be performed
+        audioSource.Stop();
+        audioSource.clip = null;
+
+        if (cutsceneImageSwapCoroutine != null)
+        {
+            StopCoroutine(cutsceneImageSwapCoroutine);
+            cutsceneImageSwapCoroutine = null;
+        }
+
+        if (autoplayCoroutine != null)
+        {
+            StopCoroutine(autoplayCoroutine);
+            autoplayCoroutine = null;
+        }
+
+        // Stop background music
+        if (backgroundAudioSource.isPlaying)
+        {
+            backgroundAudioSource.Stop();
+            backgroundAudioSource.clip = null;
+        }
+
+        isInCutscene = false;
+        isAlternatingCutsceneImage = false;
         dialogueEndTime = Time.time + dialogueCooldown;
     }
 
@@ -141,16 +252,17 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator FadeInFromBlack()
     {
+        isInCutscene = true;
+        MissionManager.Instance.HideMissionPanel();
+
         isInFade = true;
         blackOverlay.gameObject.SetActive(true);
         Color color = blackOverlay.color;
         color.a = 1f;
         blackOverlay.color = color;
 
-        // Delay for a moment before starting the fade
         yield return new WaitForSeconds(fadeDelay);
 
-        // Start next line as we're fading in
         ShowNextLine();
 
         float elapsed = 0f;
@@ -175,21 +287,20 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         foreach (char c in line)
         {
-            // Use carat to indicate a pause in the dialogue
             if (c == '^')
             {
                 yield return new WaitForSeconds(pauseDelay);
-                continue; // Skip the pause character
+                continue;
             }
             dialogueText.text += c;
-            yield return new WaitForSeconds(letterDelay); // Adjust typing speed here
+            yield return new WaitForSeconds(letterDelay);
         }
-        // make nextImage bob up and down repeatedly until next line is shown
+
         if (!isLastLine)
         {
             StartCoroutine(DoNextImageAnimation());
         }
-        
+
         isInDialogueAnimation = false;
     }
 
@@ -205,23 +316,37 @@ public class DialogueManager : MonoBehaviour
 
         while (IsDialogueActive && !isInFade && nextImage.enabled)
         {
-            // Bob the image up and down
-            if (elapsedTime >= Mathf.PI * 2) // Reset after a full cycle
-            {
+            if (elapsedTime >= Mathf.PI * 2)
                 elapsedTime = 0f;
-            }
+
             elapsedTime += Time.deltaTime * bobSpeed;
             float newY = originalPosition.y + Mathf.Sin(elapsedTime) * bobHeight;
             nextImage.transform.localPosition = new Vector3(originalPosition.x, newY, originalPosition.z);
             yield return null;
         }
 
-        // Reset position when dialogue ends or is inactive
         nextImage.transform.localPosition = originalPosition;
     }
-    
+
+    private IEnumerator AlternateCutsceneImage()
+    {
+        bool toggle = false;
+
+        while (IsDialogueActive && isAlternatingCutsceneImage)
+        {
+            cutsceneImage.sprite = toggle ? currentCutsceneImage : currentSecondaryImage;
+            toggle = !toggle;
+            yield return new WaitForSeconds(currentAlternateDuration);
+        }
+    }
+
     public bool InDialogue()
     {
         return IsDialogueActive || Time.time < dialogueEndTime;
+    }
+
+    public bool IsInCutscene()
+    {
+        return isInCutscene;
     }
 }

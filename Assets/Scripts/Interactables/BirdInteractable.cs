@@ -98,4 +98,9 @@ public class BirdInteractable : AbstractInteractable
         // Apply horizontal movement force
         rb.AddForce(horizontalDir * moveSpeed, ForceMode.VelocityChange);
     }
+
+    public override bool IsInteractable()
+    {
+        return IntroHelper.Instance.IsIntroCompleted();
+    }
 }
