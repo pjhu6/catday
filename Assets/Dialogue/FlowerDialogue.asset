@@ -12,6 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece1631143f0f534389f4f6d71cb15e0, type: 3}
   m_Name: FlowerDialogue
   m_EditorClassIdentifier: 
-  dialogueLines: []
+  dialogueLines:
+  - speakerName: Cat
+    line: I love flowers!^ I love the way they gently sway in the wind.^ I love how
+      they color the world.
+  - speakerName: Cat
+    line: And how they look strangely edible.^^ (monch.)
+  - speakerName: Cat
+    line: 2/10. (stomach growls.)
+  - speakerName: Cat
+    line: "It seems it\u2019s already lunch time.^ Better find something to eat.^^
+      Quickly!"
   cutsceneImages: []
   cutsceneAudios: []
+  backgroundMusic: {fileID: 0}

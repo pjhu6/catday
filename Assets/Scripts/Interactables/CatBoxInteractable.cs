@@ -49,18 +49,13 @@ public class CatBoxInteractable : AbstractInteractable
     {
         // Only if park mission is completed
         return MissionManager.Instance.IsMissionCompleted("explore_park") && 
-               !MissionManager.Instance.IsMissionCompleted("boxcat");
+               !MissionManager.Instance.IsMissionCompleted("boxcat1");
     }
 
     private System.Collections.IEnumerator TriggerDialogueAndCompleteMission()
     {
         dialogueObject.TriggerDialogue();
         yield return new WaitUntil(() => !DialogueManager.Instance.IsDialogueActive);
-        MissionManager.Instance.CompleteMission("boxcat");
-    }
-
-    public string[] GetDialogues()
-    {
-        throw new System.NotImplementedException();
+        MissionManager.Instance.CompleteMission("boxcat1");
     }
 }

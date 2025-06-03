@@ -16,7 +16,7 @@ public class FishMarketInteractable : AbstractInteractable
 
     public override bool IsInteractable()
     {
-        return MissionManager.Instance.IsMissionCompleted("boxcat") &&
+        return MissionManager.Instance.IsMissionCompleted("boxcat2") &&
                !MissionManager.Instance.IsMissionCompleted("fish_market");
     }
 }

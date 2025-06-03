@@ -127,6 +127,7 @@ public class MissionManager : MonoBehaviour
 
             // Fade out mission panel
             float initialAlpha = missionTextCanvas.alpha;
+            Debug.Log($"Fading out mission panel with text: {missionDescription.text}");
             for (float t = initialAlpha; t >= 0f; t -= Time.deltaTime / 1.5f)
             {
                 missionTextCanvas.alpha = t;
@@ -164,6 +165,7 @@ public class MissionManager : MonoBehaviour
         // enable the mission panel with the fade in effect
         if (missionCanvas != null)
         {
+            Debug.Log("Displaying mission panel.");
             StartCoroutine(FadeInMissionPanel());
         }
     }
