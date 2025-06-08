@@ -13,7 +13,6 @@ public class GiftShopInteractable : AbstractInteractable
     public override void Interact()
     {
         StartCoroutine(StartGameAfterDialogue());
-        Debug.Log("Switching to Telescope Game scene");
     }
 
     private System.Collections.IEnumerator StartGameAfterDialogue()

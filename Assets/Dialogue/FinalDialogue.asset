@@ -10,51 +10,61 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ece1631143f0f534389f4f6d71cb15e0, type: 3}
-  m_Name: CatBoxDialogue
+  m_Name: FinalDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speakerImage: {fileID: 0}
-    speakerName: 
+  - speakerName: 
     line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
+  - speakerName: 
     line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
+  - speakerName: 
     line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
+  - speakerName: 
     line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
+  - speakerName: 
     line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
-    line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
-    line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
-    line: 
-  - speakerImage: {fileID: 0}
-    speakerName: 
+  - speakerName: 
     line: 
   cutsceneImages:
   - dialogueStartIndex: 0
     image: {fileID: 21300000, guid: 9a14a0d2ffceabb4abaf30f1ebf5ed37, type: 3}
-  - dialogueStartIndex: 2
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 1
+    autoplayDuration: 6
+  - dialogueStartIndex: 1
     image: {fileID: 21300000, guid: 89c15ea6bf56164459e387f4f661476b, type: 3}
-  - dialogueStartIndex: 3
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 1
+    autoplayDuration: 2
+  - dialogueStartIndex: 2
     image: {fileID: 21300000, guid: 6f68ada91e842ca4299be29212801fe3, type: 3}
-  - dialogueStartIndex: 4
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 1
+    autoplayDuration: 6
+  - dialogueStartIndex: 3
     image: {fileID: 21300000, guid: 1ad3962b953238b4597e1f6439e5564d, type: 3}
-  - dialogueStartIndex: 5
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 1
+    autoplayDuration: 6
+  - dialogueStartIndex: 4
     image: {fileID: 21300000, guid: f117b14c72c7b4c448d3205f652dd739, type: 3}
-  - dialogueStartIndex: 6
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 1
+    autoplayDuration: 6
+  - dialogueStartIndex: 5
     image: {fileID: 21300000, guid: 89ad929765c950f47be6b1809718bf45, type: 3}
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 0
+    autoplayDuration: 8
   cutsceneAudios:
   - dialogueStartIndex: 0
     audio: {fileID: 8300000, guid: 9c44a3dd7cd993a4c96b699553de6bcc, type: 3}
-  - dialogueStartIndex: 3
+  - dialogueStartIndex: 2
     audio: {fileID: 8300000, guid: da822cd7bb433a349a321f161f2a5c0e, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 43bbc672f1bd8b04284be33e4c880d7e, type: 3}

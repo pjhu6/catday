@@ -55,9 +55,9 @@ public class MissionManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainScene")
+        if (scene.name == "MainScene" || scene.name == "TelescopeGame")
         {
-            Debug.Log("MainScene loaded, enabling mission canvas.");
+            Debug.Log("MainScene or TelescopeGame loaded, enabling mission canvas.");
             missionCanvas.enabled = true;
             missionCanvas.alpha = 1f;
             missionCanvas.gameObject.SetActive(true);
@@ -146,8 +146,7 @@ public class MissionManager : MonoBehaviour
         }
         else
         {
-            missionTitle.text = "Congratulations!";
-            missionDescription.text = "All missions completed!";
+            HideMissionPanel();
         }
 
         // Fade in mission panel

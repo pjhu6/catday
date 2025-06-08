@@ -51,6 +51,10 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		[Header("Audio")]
+		public AudioClip walkingClip;
+		public AudioClip sprintingClip;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -71,6 +75,9 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+
+		// walking audio
+		private AudioSource _audioSource;
 
 		private const float _threshold = 0.01f;
 
@@ -97,6 +104,7 @@ namespace StarterAssets
 
 		private void Start()
 		{
+			_audioSource = gameObject.AddComponent<AudioSource>();
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM
@@ -205,6 +213,27 @@ namespace StarterAssets
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+			// play audio while moving
+			bool isMoving = _input.move != Vector2.zero && Grounded && !DialogueManager.Instance.InDialogue();
+			AudioClip targetClip = _input.sprint ? sprintingClip : walkingClip;
+
+			if (isMoving)
+			{
+				if (_audioSource.clip != targetClip)
+				{
+					_audioSource.clip = targetClip;
+					_audioSource.Play();
+				}
+				else if (!_audioSource.isPlaying)
+				{
+					_audioSource.Play();
+				}
+			}
+			else
+			{
+				_audioSource.Stop();
+			}
 		}
 
 		private void JumpAndGravity()

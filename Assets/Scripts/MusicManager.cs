@@ -26,7 +26,7 @@ public class MusicManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Update()
+    private void Start()
     {
         if (SceneManager.GetActiveScene().name != mainSceneName)
         {
@@ -51,7 +51,7 @@ public class MusicManager : MonoBehaviour
         if (!audioSource.isPlaying)
         {
             audioSource.clip = walkingMusic;
-            audioSource.loop = true;
+            audioSource.loop = false;
             audioSource.volume = volume;
             audioSource.Play();
         }

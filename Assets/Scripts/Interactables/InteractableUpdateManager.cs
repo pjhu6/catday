@@ -67,7 +67,7 @@ public class InteractableManager : MonoBehaviour
             CheckForKeyboardInput(closestInteractable);
 
             // Check for click input
-            CheckForClick();
+            CheckForClick(closestInteractable);
         }
         else
         {
@@ -86,7 +86,7 @@ public class InteractableManager : MonoBehaviour
         return t.position + localUp * halfHeight;
     }
 
-    void CheckForClick()
+    void CheckForClick(AbstractInteractable closestInteractable)
     {
         // Check for click input
         if (Input.GetMouseButtonDown(0))
@@ -96,7 +96,10 @@ public class InteractableManager : MonoBehaviour
             {
                 if (hit.collider.TryGetComponent<AbstractInteractable>(out var interactable))
                 {
-                    interactable.Click();
+                    if (closestInteractable.Equals(interactable))
+                    {
+                        interactable.Click();
+                    }
                 }
             }
         }

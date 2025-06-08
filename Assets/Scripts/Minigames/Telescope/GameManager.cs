@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public DialogueData outroDialogue;
     public RectTransform targetImage;
     public Image crosshairImage;
     public Sprite centeredSprite;
@@ -15,6 +17,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        // disable Paws animation game object
+        MissionManager.Instance.CompleteMission("art_store");
+        GameObject paws = GameObject.Find("Paws");
+        if (paws != null)
+        {
+            paws.SetActive(false);
+        }
         originalSprite = crosshairImage.sprite;
     }
 
@@ -44,7 +53,7 @@ public class GameManager : MonoBehaviour
             {
                 hasWon = true;
                 crosshairImage.sprite = centeredSprite; // Ensure the final sprite is the centered one
-                Debug.Log("Won!");
+                StartCoroutine(FinishGame());
             }
         }
         else
@@ -52,5 +61,14 @@ public class GameManager : MonoBehaviour
             crosshairImage.sprite = originalSprite;
             timer = 0f;
         }
+    }
+
+    IEnumerator FinishGame()
+    {
+        // Hide crosshair image
+        crosshairImage.gameObject.SetActive(false);
+        MissionManager.Instance.CompleteMission("final_mission");
+        yield return new WaitForSeconds(6f);
+        DialogueManager.Instance.StartDialogue(outroDialogue);
     }
 }

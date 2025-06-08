@@ -12,6 +12,7 @@ public class TrashInteractable : AbstractInteractable
 
     public override void Click()
     {
+        Debug.Log("Trash Interactable Clicked");
         StartCoroutine(TipOverThenDialogue());
     }
 
@@ -22,14 +23,14 @@ public class TrashInteractable : AbstractInteractable
 
     public override bool IsInteractable()
     {
-        // return MissionManager.Instance.IsMissionCompleted("boxcat1") &&
-        //        !MissionManager.Instance.IsMissionCompleted("boxcat2");
-        return true;
+        return MissionManager.Instance.IsMissionCompleted("boxcat1") &&
+               !MissionManager.Instance.IsMissionCompleted("boxcat2");
     }
 
     private IEnumerator TipOverThenDialogue()
     {
         yield return StartCoroutine(TipFromBottom());
+        yield return new WaitForSeconds(0.5f);
         DialogueManager.Instance.StartDialogue(dialogueData);
         yield return new WaitUntil(() => !DialogueManager.Instance.IsDialogueActive);
         MissionManager.Instance.CompleteMission("boxcat2");
@@ -60,5 +61,7 @@ public class TrashInteractable : AbstractInteractable
 
         transform.rotation = targetRot;
         transform.position = worldPivot - transform.TransformVector(pivotOffset);
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
     }
 }

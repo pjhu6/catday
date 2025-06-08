@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMP_Text speakerNameText;
     [SerializeField] private Image nextImage;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource nextAudioSource;
     [SerializeField] private AudioSource backgroundAudioSource;
 
     [SerializeField] private GameObject cutscenePanel;
@@ -65,6 +66,7 @@ public class DialogueManager : MonoBehaviour
             && !isInFade
             && !isInDialogueAnimation)
         {
+            nextAudioSource.Play();
             ShowNextLine();
         }
     }
@@ -107,6 +109,9 @@ public class DialogueManager : MonoBehaviour
 
         if (currentLineIndex < currentLines.Length)
         {
+            // Stop any existing audio
+            audioSource.Stop();
+
             DialogueLine currentLine = currentLines[currentLineIndex];
             bool isLastLine = currentLineIndex == currentLines.Length - 1;
 

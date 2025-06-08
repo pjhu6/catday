@@ -14,17 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speakerName: Old Man
-    line: Poor kitties, why are you on your own?
+    line: Kitty, why are you on your own?
   - speakerName: Cat
     line: Meow
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
+  - speakerName: Old Man
+    line: "You poor thing.^ Y\u2019know, you remind me a lot of my old cat.^ She
+      was a fat fella that ate everything she saw."
+  - speakerName: Old Man
+    line: "Everyday, we\u2019d sit together on my porch and watch the sunset melt
+      orange."
+  - speakerName: Old Man
+    line: "When it rained,^ we\u2019d huddle under this tiny umbrella,^ listening
+      to it fall."
+  - speakerName: Old Man
+    line: "And when my heart felt cloudy\u2026^ somehow, she always knew.^ She\u2019d
+      curl up against my leg, despite how much she hated being touched."
+  - speakerName: Old Man
+    line: "Hohoho I\u2019d do anything to hear (OLD MAN\u2019S CAT\u2019S NAME) purrs
+      again."
+  - speakerName: Cat
+    line: Meow meow
+  - speakerName: Old Man
+    line: Here kitty, take this.
+  - speakerName: Old Man
+    line: Hohoho, have a good life kitty.
+  - speakerName: Cat
+    line: "YES!^^ This looks mighty scrumptious.^ Don\u2019t mind if I do\u2014"
+  - speakerName: Cat
+    line: "\u2026 No\u2026^^ Must resist\u2026^ Must stay strong\u2026^^ One piece
+      for Boxcat.^ And one piece for the sake of my ultimate mission."
   cutsceneImages:
   - dialogueStartIndex: 0
     image: {fileID: 21300000, guid: 0a8d1ca8d6f70a0408ccc518bce86068, type: 3}
@@ -39,30 +57,36 @@ MonoBehaviour:
     isAutoplay: 0
     autoplayDuration: 0
   - dialogueStartIndex: 2
+    image: {fileID: 21300000, guid: 0a8d1ca8d6f70a0408ccc518bce86068, type: 3}
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 8
     image: {fileID: 21300000, guid: 3aed9fd8433b7e441a29b572af34b7f5, type: 3}
     secondaryImage: {fileID: 21300000, guid: d01e666259fece24993a9084f9f6f58d, type: 3}
     alternateDuration: 0.33
     isAutoplay: 0
-    autoplayDuration: 3
-  - dialogueStartIndex: 3
+    autoplayDuration: 0
+  - dialogueStartIndex: 9
     image: {fileID: 21300000, guid: f574a40d88da8234d8e6cf46b204a44a, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
     isAutoplay: 0
     autoplayDuration: 3
-  - dialogueStartIndex: 4
+  - dialogueStartIndex: 10
     image: {fileID: 21300000, guid: b07ea54a610b8f34383c0851cd1506a0, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 3
-  - dialogueStartIndex: 5
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 11
     image: {fileID: 21300000, guid: 04da8166876428f44821e47f29f6ee80, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 3
+    isAutoplay: 0
+    autoplayDuration: 0
   cutsceneAudios:
-  - dialogueStartIndex: 2
+  - dialogueStartIndex: 8
     audio: {fileID: 8300000, guid: 00780c2e26b1b3d44a1b26b050525817, type: 3}
-  backgroundMusic: {fileID: 8300000, guid: 43bbc672f1bd8b04284be33e4c880d7e, type: 3}
+  backgroundMusic: {fileID: 0}

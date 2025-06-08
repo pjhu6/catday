@@ -7,6 +7,7 @@ public class PawAnimation : MonoBehaviour
     public Image pawImage;
     public Sprite pawFrame1;
     public Sprite pawFrame2;
+    public AudioSource meowAudio;
 
     public float frameDuration = 0.1f;    // Time between frame 1 and 2
     public float totalDuration = 0.3f;    // Total time before hiding
@@ -19,6 +20,7 @@ public class PawAnimation : MonoBehaviour
         // Check if the dialogue is not active and the mouse is clicked, and not already animating
         if (!DialogueManager.Instance.InDialogue() && Input.GetMouseButtonDown(0) && !isAnimating)
         {
+            meowAudio.Play();
             StartCoroutine(PlayPawAnimation());
         }
     }
