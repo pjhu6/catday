@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GiftShopInteractable : AbstractInteractable
 {
     public DialogueData dialogueData;
+    public Image blackScreenImage;
 
     public override void Click()
     {
@@ -19,6 +21,10 @@ public class GiftShopInteractable : AbstractInteractable
     {
         DialogueManager.Instance.StartDialogue(dialogueData);
         yield return new WaitUntil(() => !DialogueManager.Instance.IsDialogueActive);
+        // Show a black screen to avoid showing world while loading.
+        blackScreenImage.gameObject.SetActive(true);
+        MissionManager.Instance.CompleteMission("art_store");
+        yield return new WaitForSeconds(2);
         SceneManager.LoadScene("TelescopeGame");
     }
 

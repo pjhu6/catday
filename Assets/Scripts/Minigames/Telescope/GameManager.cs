@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // disable Paws animation game object
-        MissionManager.Instance.CompleteMission("art_store");
         GameObject paws = GameObject.Find("Paws");
         if (paws != null)
         {

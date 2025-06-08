@@ -36,6 +36,7 @@ public class CutsceneAudio
 {
     public int dialogueStartIndex;
     public AudioClip audio;
+    public float delay = 0;
 }
 
 

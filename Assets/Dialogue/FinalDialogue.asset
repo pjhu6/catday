@@ -13,58 +13,101 @@ MonoBehaviour:
   m_Name: FinalDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
+  - speakerName: Tired Girl
+    line: "Lucy,^ I\u2019m home!"
+  - speakerName: Tired Girl
+    line: "Ugh\u2026^^ this headache\u2026^ that damn phone has been ringing all
+      day.^ Can a girl ever catch a break?"
+  - speakerName: Tired Girl
+    line: " Apparently not,^ because there\u2019s still that massive pile of paperwork
+      waiting for tomorrow."
+  - speakerName: Tired Girl
+    line: "At least after Tuesday is Wednesday\u2026^^ and after Thursday, is Friday!"
+  - speakerName: Tired Girl
+    line: They really had me working overtime, today of all days.^ *Sigh*
+  - speakerName: Tired Girl
+    line: '!!!'
+  - speakerName: Tired Girl
+    line: 'Lucy, what is this?! '
+  - speakerName: Tired Girl
+    line: "It can\u2019t be.^ Did you get this\u2026^^ for me?"
+  - speakerName: Cat
+    line: Meow.
+  - speakerName: Tired Girl
+    line: "Oh,^ sweet, sweet Lucy.^ How did you even know it\u2019s my birthday?^^
+      No one else remembered,^ even though I have been at this company for three
+      years!"
+  - speakerName: Cat
+    line: Meow meow meow.
+  - speakerName: Tired Girl
+    line: "This means the absolute world to me.^^ With you,^ life is good^. I\u2019ll
+      treasure this forever, thank you kitty!^^ MWAH <3"
   cutsceneImages:
   - dialogueStartIndex: 0
     image: {fileID: 21300000, guid: 9a14a0d2ffceabb4abaf30f1ebf5ed37, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 6
+    isAutoplay: 0
+    autoplayDuration: 0
   - dialogueStartIndex: 1
     image: {fileID: 21300000, guid: 89c15ea6bf56164459e387f4f661476b, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 2
+    isAutoplay: 0
+    autoplayDuration: 0
   - dialogueStartIndex: 2
     image: {fileID: 21300000, guid: 6f68ada91e842ca4299be29212801fe3, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 6
-  - dialogueStartIndex: 3
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 4
     image: {fileID: 21300000, guid: 1ad3962b953238b4597e1f6439e5564d, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 6
-  - dialogueStartIndex: 4
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 5
     image: {fileID: 21300000, guid: f117b14c72c7b4c448d3205f652dd739, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
-    isAutoplay: 1
-    autoplayDuration: 6
-  - dialogueStartIndex: 5
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 6
+    image: {fileID: 21300000, guid: d4ce07383b857b947aca58b8a7abf686, type: 3}
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 7
+    image: {fileID: 21300000, guid: 1435c60ce97e0c348b4625eb91a6cc19, type: 3}
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 0
+    autoplayDuration: 0
+  - dialogueStartIndex: 8
     image: {fileID: 21300000, guid: 89ad929765c950f47be6b1809718bf45, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
     isAutoplay: 0
-    autoplayDuration: 8
+    autoplayDuration: 0
   cutsceneAudios:
   - dialogueStartIndex: 0
-    audio: {fileID: 8300000, guid: 9c44a3dd7cd993a4c96b699553de6bcc, type: 3}
+    audio: {fileID: 8300000, guid: f84ad672fa45e2e4f9c02054bba0fb6d, type: 3}
+    delay: 0
+  - dialogueStartIndex: 1
+    audio: {fileID: 8300000, guid: 5420fdfef783ca746a27dd1d82519ba5, type: 3}
+    delay: 0
   - dialogueStartIndex: 2
     audio: {fileID: 8300000, guid: da822cd7bb433a349a321f161f2a5c0e, type: 3}
-  backgroundMusic: {fileID: 8300000, guid: 43bbc672f1bd8b04284be33e4c880d7e, type: 3}
+    delay: 0
+  - dialogueStartIndex: 7
+    audio: {fileID: 8300000, guid: 00780c2e26b1b3d44a1b26b050525817, type: 3}
+    delay: 0
+  - dialogueStartIndex: 8
+    audio: {fileID: 8300000, guid: 2a0d382f3a3d4b84ca55752b6d34a241, type: 3}
+    delay: 0
+  - dialogueStartIndex: 10
+    audio: {fileID: 8300000, guid: 05a01e01665f98f48bbb3b6eb79da3e1, type: 3}
+    delay: 0
+  backgroundMusic: {fileID: 0}

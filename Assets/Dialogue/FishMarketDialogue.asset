@@ -16,7 +16,7 @@ MonoBehaviour:
   - speakerName: Old Man
     line: Kitty, why are you on your own?
   - speakerName: Cat
-    line: Meow
+    line: Meow.
   - speakerName: Old Man
     line: "You poor thing.^ Y\u2019know, you remind me a lot of my old cat.^ She
       was a fat fella that ate everything she saw."
@@ -30,10 +30,9 @@ MonoBehaviour:
     line: "And when my heart felt cloudy\u2026^ somehow, she always knew.^ She\u2019d
       curl up against my leg, despite how much she hated being touched."
   - speakerName: Old Man
-    line: "Hohoho I\u2019d do anything to hear (OLD MAN\u2019S CAT\u2019S NAME) purrs
-      again."
+    line: "Hohoho I\u2019d do anything to hear Binksy's  purrs again."
   - speakerName: Cat
-    line: Meow meow
+    line: Meow meow...
   - speakerName: Old Man
     line: Here kitty, take this.
   - speakerName: Old Man
@@ -89,4 +88,11 @@ MonoBehaviour:
   cutsceneAudios:
   - dialogueStartIndex: 8
     audio: {fileID: 8300000, guid: 00780c2e26b1b3d44a1b26b050525817, type: 3}
+    delay: 0
+  - dialogueStartIndex: 1
+    audio: {fileID: 8300000, guid: 2a0d382f3a3d4b84ca55752b6d34a241, type: 3}
+    delay: 0
+  - dialogueStartIndex: 7
+    audio: {fileID: 8300000, guid: 05a01e01665f98f48bbb3b6eb79da3e1, type: 3}
+    delay: 0
   backgroundMusic: {fileID: 0}

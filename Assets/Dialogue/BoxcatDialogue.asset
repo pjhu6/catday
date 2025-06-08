@@ -20,7 +20,7 @@ MonoBehaviour:
     line: "Thank goodness there\u2019s someone here.^ Please tell me there\u2019s
       something to eat in Boxcat land."
   - speakerName: Boxcat
-    line: "I hate to tell you this but\u2026^^ (stomach growls)."
+    line: "I hate to tell you this but\u2026"
   - speakerName: Boxcat
     line: "There\u2019s nothing ma\u2019am.^ I\u2019ve been searching all morning.^
       Boxcat has checked everywhere except for this one last trash can."
@@ -30,4 +30,11 @@ MonoBehaviour:
     line: "Don\u2019t worry Boxcat, these magic paws have never failed me before.^
       Leave it to me!"
   cutsceneImages: []
-  cutsceneAudios: []
+  cutsceneAudios:
+  - dialogueStartIndex: 0
+    audio: {fileID: 8300000, guid: 3b8d34609af37d94c89d17d59ad6ece4, type: 3}
+    delay: 0
+  - dialogueStartIndex: 2
+    audio: {fileID: 8300000, guid: c81cfc60530f75f4baf19a141c22fdf6, type: 3}
+    delay: 0.35
+  backgroundMusic: {fileID: 0}

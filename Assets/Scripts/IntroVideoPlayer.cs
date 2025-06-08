@@ -1,27 +1,30 @@
 using UnityEngine;
-using UnityEngine.Video;
-
+using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 
 public class IntroVideoPlayer : MonoBehaviour
 {
-    public VideoPlayer videoPlayer;
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")]
+    private static extern void PlayOverlayVideo(string url);
+#endif
+
+    [SerializeField] private string videoUrl = "myclip.mp4";
+    [SerializeField] private float videoDuration = 10f;
 
     void Start()
     {
-        if (videoPlayer != null)
-        {
-            videoPlayer.Play();
-            videoPlayer.loopPointReached += OnVideoEnd;
-        }
-        else
-        {
-            Debug.LogError("VideoPlayer is not assigned in IntroVideoPlayer.");
-        }
+#if UNITY_WEBGL && !UNITY_EDITOR
+        PlayOverlayVideo(videoUrl);
+        Invoke(nameof(LoadMainScene), videoDuration);
+#else
+        Debug.LogWarning("IntroVideoPlayer is intended for WebGL builds only.");
+        LoadMainScene();
+#endif
     }
 
-    private void OnVideoEnd(VideoPlayer vp)
+    private void LoadMainScene()
     {
-        // Load MainScene after the video ends
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("MainScene");
     }
 }

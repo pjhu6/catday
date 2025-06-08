@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -34,6 +36,7 @@ public class DialogueManager : MonoBehaviour
     private AudioClip backgroundMusic;
     private bool isInFade = false;
     private bool isInDialogueAnimation = false;
+    private Coroutine typeAnimationCoroutine; // Added to hold reference to the type animation
 
     private float dialogueEndTime;
 
@@ -60,14 +63,24 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsDialogueActive
-            && autoplayCoroutine == null
-            && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-            && !isInFade
-            && !isInDialogueAnimation)
+        if (IsDialogueActive && autoplayCoroutine == null && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && !isInFade)
         {
-            nextAudioSource.Play();
-            ShowNextLine();
+            // If currently animating text, complete it immediately
+            if (isInDialogueAnimation)
+            {
+                if (typeAnimationCoroutine != null)
+                {
+                    StopCoroutine(typeAnimationCoroutine);
+                    typeAnimationCoroutine = null;
+                }
+                CompleteTypeAnimation();
+            }
+            // Otherwise, move to the next line
+            else
+            {
+                nextAudioSource.Play();
+                ShowNextLine();
+            }
         }
     }
 
@@ -102,10 +115,17 @@ public class DialogueManager : MonoBehaviour
         }
 
         if (autoplayCoroutine != null)
-            {
-                StopCoroutine(autoplayCoroutine);
-                autoplayCoroutine = null;
-            }
+        {
+            StopCoroutine(autoplayCoroutine);
+            autoplayCoroutine = null;
+        }
+
+        // Stop any existing type animation coroutine
+        if (typeAnimationCoroutine != null)
+        {
+            StopCoroutine(typeAnimationCoroutine);
+            typeAnimationCoroutine = null;
+        }
 
         if (currentLineIndex < currentLines.Length)
         {
@@ -120,24 +140,24 @@ public class DialogueManager : MonoBehaviour
 
             if (!string.IsNullOrEmpty(currentLine.line))
             {
-                StartCoroutine(TypeAnimation(currentLine.line, isLastLine));
+                typeAnimationCoroutine = StartCoroutine(TypeAnimation(currentLine.line, isLastLine));
             }
 
             AudioClip nextClip = null;
+            float audioDelay = 0f;
             foreach (var cutscene in cutsceneAudios)
             {
                 if (cutscene.dialogueStartIndex == currentLineIndex)
                 {
                     nextClip = cutscene.audio;
+                    audioDelay = cutscene.delay;
                     break;
                 }
             }
 
             if (nextClip != null)
             {
-                Debug.Log("Playing audio for line: " + currentLineIndex);
-                audioSource.clip = nextClip;
-                audioSource.Play();
+                StartCoroutine(PlayAudio(nextClip, audioDelay));
             }
 
             CutsceneImages matchedCutscene = null;
@@ -193,6 +213,14 @@ public class DialogueManager : MonoBehaviour
         {
             EndDialogue();
         }
+    }
+
+    private IEnumerator PlayAudio(AudioClip audioClip, float delay)
+    {
+        Debug.Log("Playing audio for line: " + currentLineIndex);
+        yield return new WaitForSeconds(delay);
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 
     private IEnumerator AutoplayNextLineAfterDelay(float delay, bool isLastLine)
@@ -289,25 +317,156 @@ public class DialogueManager : MonoBehaviour
     {
         nextImage.enabled = false;
         isInDialogueAnimation = true;
-        dialogueText.text = "";
+
+        // Prepare step list: pairs of (char, shouldPauseBefore)
+        List<(char c, bool pauseBefore)> steps = new();
+        bool pauseNext = false;
         foreach (char c in line)
         {
             if (c == '^')
             {
-                yield return new WaitForSeconds(pauseDelay);
-                continue;
+                pauseNext = true;
             }
-            dialogueText.text += c;
-            yield return new WaitForSeconds(letterDelay);
+            else
+            {
+                steps.Add((c, pauseNext));
+                pauseNext = false;
+            }
         }
 
+        // Construct display string (only the actual characters)
+        string displayLine = new string(steps.Select(pair => pair.c).ToArray());
+        dialogueText.text = displayLine;
+        dialogueText.ForceMeshUpdate();
+
+        TMP_TextInfo textInfo = dialogueText.textInfo;
+        int totalVisibleCharacters = textInfo.characterCount;
+        Color32[] newVertexColors;
+
+        // Make all characters transparent
+        for (int i = 0; i < totalVisibleCharacters; i++)
+        {
+            if (!textInfo.characterInfo[i].isVisible) continue;
+
+            int meshIndex = textInfo.characterInfo[i].materialReferenceIndex;
+            int vertexIndex = textInfo.characterInfo[i].vertexIndex;
+            newVertexColors = textInfo.meshInfo[meshIndex].colors32;
+
+            for (int j = 0; j < 4; j++)
+            {
+                newVertexColors[vertexIndex + j].a = 0;
+            }
+        }
+
+        dialogueText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+        // Reveal one character at a time
+        for (int i = 0; i < steps.Count; i++)
+        {
+            if (i >= totalVisibleCharacters)
+                break;
+
+            if (steps[i].pauseBefore)
+            {
+                yield return new WaitForSeconds(pauseDelay);
+            }
+
+            if (!textInfo.characterInfo[i].isVisible)
+                continue;
+
+            int meshIndex = textInfo.characterInfo[i].materialReferenceIndex;
+            int vertexIndex = textInfo.characterInfo[i].vertexIndex;
+            newVertexColors = textInfo.meshInfo[meshIndex].colors32;
+
+            float elapsed = 0f;
+            float fadeTime = letterDelay;
+
+            while (elapsed < fadeTime)
+            {
+                elapsed += Time.deltaTime;
+                byte alpha = (byte)Mathf.Lerp(0, 255, elapsed / fadeTime);
+                for (int j = 0; j < 4; j++)
+                {
+                    newVertexColors[vertexIndex + j].a = alpha;
+                }
+                dialogueText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                yield return null;
+            }
+
+            // Ensure fully visible
+            for (int j = 0; j < 4; j++)
+            {
+                newVertexColors[vertexIndex + j].a = 255;
+            }
+            dialogueText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+        }
+
+        isInDialogueAnimation = false; // Mark animation as complete
+        typeAnimationCoroutine = null; // Clear coroutine reference
         if (!isLastLine)
         {
             StartCoroutine(DoNextImageAnimation());
         }
-
-        isInDialogueAnimation = false;
     }
+
+    private void CompleteTypeAnimation()
+    {
+        // This method will be called when the user clicks during typing.
+        // It should immediately make all text visible and play the audio.
+        if (currentLineIndex > 0 && currentLineIndex <= currentLines.Length)
+        {
+            DialogueLine currentLine = currentLines[currentLineIndex - 1]; // Get the current line that was being typed
+
+            // Make all text visible
+            dialogueText.text = new string(currentLine.line.Where(c => c != '^').ToArray());
+            dialogueText.ForceMeshUpdate();
+            TMP_TextInfo textInfo = dialogueText.textInfo;
+            int totalVisibleCharacters = textInfo.characterCount;
+
+            for (int i = 0; i < totalVisibleCharacters; i++)
+            {
+                if (!textInfo.characterInfo[i].isVisible) continue;
+
+                int meshIndex = textInfo.characterInfo[i].materialReferenceIndex;
+                int vertexIndex = textInfo.characterInfo[i].vertexIndex;
+                Color32[] newVertexColors = textInfo.meshInfo[meshIndex].colors32;
+
+                for (int j = 0; j < 4; j++)
+                {
+                    newVertexColors[vertexIndex + j].a = 255; // Make fully opaque
+                }
+            }
+            dialogueText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+            // Play the current audio immediately if it's not already playing
+            AudioClip currentClip = null;
+            foreach (var cutscene in cutsceneAudios)
+            {
+                if (cutscene.dialogueStartIndex == currentLineIndex - 1) // Match the current line index
+                {
+                    currentClip = cutscene.audio;
+                    break;
+                }
+            }
+
+            if (currentClip != null && audioSource.clip != currentClip)
+            {
+                audioSource.Stop();
+                audioSource.clip = currentClip;
+                audioSource.Play();
+            } else if (currentClip != null && !audioSource.isPlaying) {
+                // If it's the right clip but not playing, play it
+                audioSource.Play();
+            }
+
+            isInDialogueAnimation = false; // Animation is now complete
+            if (currentLineIndex -1 < currentLines.Length - 1) // If it's not the very last line
+            {
+                StartCoroutine(DoNextImageAnimation());
+            }
+        }
+    }
+
 
     private IEnumerator DoNextImageAnimation()
     {

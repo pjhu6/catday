@@ -13,16 +13,25 @@ MonoBehaviour:
   m_Name: GiftShopDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
-  - speakerName: 
-    line: 
+  - speakerName: Newly Hired Girl
+    line: "Welcome in!^^ Let me know if you have any\u2014"
+  - speakerName: Newly Hired Girl
+    line: "What the kitty!^ What are you doing here?^ Are you lost?^  Oh my DAYS,^
+      YOU\u2019RE SO CUTE!^^ CAN I COME PET YOU?"
+  - speakerName: Newly Hired Girl
+    line: "Just don\u2019t tell my boss please.^ It\u2019s rough out here these days."
+  - speakerName: Cat
+    line: Meow!
+  - speakerName: Newly Hired Girl
+    line: What the FISH!
+  - speakerName: Newly Hired Girl
+    line: "\u2026 Does anyone know what I\u2019m supposed to do?^^ Man,^ they didn\u2019t
+      have anything on this in the employee handbook."
+  - speakerName: Cat
+    line: Meow meow meow meow meow.
+  - speakerName: Newly Hired Girl
+    line: "Aha!^^ I think I know.^ Wow,^ I\u2019m such a genius.^ Show me what you\u2019re
+      looking for kitty."
   cutsceneImages:
   - dialogueStartIndex: 0
     image: {fileID: 21300000, guid: e6b94fd4517581c41a22d3fa70413bf2, type: 3}
@@ -32,12 +41,6 @@ MonoBehaviour:
     autoplayDuration: 0
   - dialogueStartIndex: 1
     image: {fileID: 21300000, guid: 9c8d388dad7fa2d4b8d5e577369ad499, type: 3}
-    secondaryImage: {fileID: 0}
-    alternateDuration: 0
-    isAutoplay: 0
-    autoplayDuration: 0
-  - dialogueStartIndex: 2
-    image: {fileID: 21300000, guid: f65baeed0167aaa468ff6e285a751640, type: 3}
     secondaryImage: {fileID: 0}
     alternateDuration: 0
     isAutoplay: 0
@@ -54,5 +57,17 @@ MonoBehaviour:
     alternateDuration: 0
     isAutoplay: 0
     autoplayDuration: 0
-  cutsceneAudios: []
+  - dialogueStartIndex: 6
+    image: {fileID: 21300000, guid: f65baeed0167aaa468ff6e285a751640, type: 3}
+    secondaryImage: {fileID: 0}
+    alternateDuration: 0
+    isAutoplay: 0
+    autoplayDuration: 0
+  cutsceneAudios:
+  - dialogueStartIndex: 3
+    audio: {fileID: 8300000, guid: 1e2e0f6875a5071419f29f61e634d264, type: 3}
+    delay: 0
+  - dialogueStartIndex: 6
+    audio: {fileID: 8300000, guid: 05a01e01665f98f48bbb3b6eb79da3e1, type: 3}
+    delay: 0
   backgroundMusic: {fileID: 0}

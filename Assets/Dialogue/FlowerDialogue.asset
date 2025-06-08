@@ -17,12 +17,18 @@ MonoBehaviour:
     line: I love flowers!^ I love the way they gently sway in the wind.^ I love how
       they color the world.
   - speakerName: Cat
-    line: And how they look strangely edible.^^ (monch.)
+    line: And how they look strangely edible.
   - speakerName: Cat
-    line: 2/10. (stomach growls.)
+    line: 2/10.
   - speakerName: Cat
     line: "It seems it\u2019s already lunch time.^ Better find something to eat.^^
       Quickly!"
   cutsceneImages: []
-  cutsceneAudios: []
+  cutsceneAudios:
+  - dialogueStartIndex: 1
+    audio: {fileID: 8300000, guid: 9dec34f70f0c55d45905c4d4136d0180, type: 3}
+    delay: 0.6
+  - dialogueStartIndex: 2
+    audio: {fileID: 8300000, guid: 3d271c7c029f5eb45955af23f4cea1d4, type: 3}
+    delay: 0.36
   backgroundMusic: {fileID: 0}
