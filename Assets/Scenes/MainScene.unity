@@ -29831,7 +29831,7 @@ MonoBehaviour:
   dialogueData: {fileID: 11400000, guid: aad618a2a06c32c4aaf34efceb318c75, type: 2}
   tutorialCanvasGroup: {fileID: 532185095}
   tutorialDuration: 8
-  skipIntro: 1
+  skipIntro: 0
   playMusicDuringIntro: 1
 --- !u!114 &1054256490
 MonoBehaviour:
