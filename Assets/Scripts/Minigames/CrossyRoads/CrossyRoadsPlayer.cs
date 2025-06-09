@@ -25,12 +25,17 @@ public class CrossyRoadsPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (GridManager.Instance.IsBelowScreen(currentGridPosition))
+        if (!FindObjectOfType<IntroPlayer>().IsIntroFinished())
         {
-            // If the player is off the screen, reset the game
-            RestartGame();
             return;
         }
+
+        if (GridManager.Instance.IsBelowScreen(currentGridPosition))
+            {
+                // If the player is off the screen, reset the game
+                RestartGame();
+                return;
+            }
         
         // Update score if player hasn't been on this grid height before
         if (!isMoving)

@@ -22,6 +22,11 @@ public class RoadSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (!FindObjectOfType<IntroPlayer>().IsIntroFinished())
+        {
+            return;
+        }
+
         Vector2 topCenter = mainCamera.ViewportToWorldPoint(new Vector2(0.5f, 1.1f));
         Vector2Int gridPos = gridManager.WorldToGrid(topCenter);
 

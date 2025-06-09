@@ -3,14 +3,14 @@ import os
 import numpy as np
 
 # List of image file names to resize
-image_names = ["button.png"]  # Add your image names here
+image_names = ["house4.5.png"]  # Add your image names here
 
 # Input and output folders
 input_folder = r"D:\Projects\catday\OgImages"
 output_folder = r"D:\Projects\catday\finImages"
 
 # Max dimension size (e.g., 1080 pixels)
-max_dim = 720
+max_dim = 1024
 
 # Create output folder if it doesn't exist
 os.makedirs(output_folder, exist_ok=True)

@@ -110,4 +110,4 @@ MonoBehaviour:
   - dialogueStartIndex: 10
     audio: {fileID: 8300000, guid: 05a01e01665f98f48bbb3b6eb79da3e1, type: 3}
     delay: 0
-  backgroundMusic: {fileID: 0}
+  backgroundMusic: {fileID: 8300000, guid: 149f548113c10374b98ec450507a1bad, type: 3}

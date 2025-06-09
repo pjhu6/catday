@@ -18,6 +18,7 @@ MonoBehaviour:
   - speakerName: Mochi
     line: No, I'm Mochi!
   - speakerName: Cat
-    line: Ok buddy.
+    line: "Sometimes I wonder if there\u2019s any activity in that head of yours."
   cutsceneImages: []
   cutsceneAudios: []
+  backgroundMusic: {fileID: 0}

@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float fadeDelay = 0.5f;
     [SerializeField] private float letterDelay = 0.05f;
     [SerializeField] private float pauseDelay = 0.1f;
+    [SerializeField] private float skipCooldownDelay = 1f;
 
     public float dialogueCooldown = 0.2f;
 
@@ -47,6 +48,7 @@ public class DialogueManager : MonoBehaviour
     private float currentAlternateDuration = 1f;
     private bool isAlternatingCutsceneImage = false;
     private bool isInCutscene = false;
+    private bool isSkipCooldown = false;
 
     private void Awake()
     {
@@ -63,7 +65,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsDialogueActive && autoplayCoroutine == null && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && !isInFade)
+        if (IsDialogueActive && autoplayCoroutine == null && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && !isInFade && !isSkipCooldown)
         {
             // If currently animating text, complete it immediately
             if (isInDialogueAnimation)
@@ -73,7 +75,7 @@ public class DialogueManager : MonoBehaviour
                     StopCoroutine(typeAnimationCoroutine);
                     typeAnimationCoroutine = null;
                 }
-                CompleteTypeAnimation();
+                StartCoroutine(CompleteTypeAnimation());
             }
             // Otherwise, move to the next line
             else
@@ -409,13 +411,13 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void CompleteTypeAnimation()
+    private IEnumerator CompleteTypeAnimation()
     {
         // This method will be called when the user clicks during typing.
         // It should immediately make all text visible and play the audio.
         if (currentLineIndex > 0 && currentLineIndex <= currentLines.Length)
         {
-            DialogueLine currentLine = currentLines[currentLineIndex - 1]; // Get the current line that was being typed
+            DialogueLine currentLine = currentLines[currentLineIndex - 1];
 
             // Make all text visible
             dialogueText.text = new string(currentLine.line.Where(c => c != '^').ToArray());
@@ -454,16 +456,22 @@ public class DialogueManager : MonoBehaviour
                 audioSource.Stop();
                 audioSource.clip = currentClip;
                 audioSource.Play();
-            } else if (currentClip != null && !audioSource.isPlaying) {
+            }
+            else if (currentClip != null && !audioSource.isPlaying)
+            {
                 // If it's the right clip but not playing, play it
                 audioSource.Play();
             }
 
+            isSkipCooldown = true;
+            yield return new WaitForSeconds(skipCooldownDelay);
+
             isInDialogueAnimation = false; // Animation is now complete
-            if (currentLineIndex -1 < currentLines.Length - 1) // If it's not the very last line
+            if (currentLineIndex - 1 < currentLines.Length - 1) // If it's not the very last line
             {
                 StartCoroutine(DoNextImageAnimation());
             }
+            isSkipCooldown = false;
         }
     }
 

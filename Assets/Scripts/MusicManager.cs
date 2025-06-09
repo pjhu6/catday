@@ -11,6 +11,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private float volume = 0.5f;
     [SerializeField] private float fadeOutDuration = 0.5f;
     [SerializeField] private bool isEnabled = true;
+    [SerializeField] private bool isLoop = true;
     private static readonly string mainSceneName = "MainScene";
 
     private void Awake()
@@ -26,7 +27,7 @@ public class MusicManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start()
+    private void Update()
     {
         if (SceneManager.GetActiveScene().name != mainSceneName)
         {
@@ -51,7 +52,7 @@ public class MusicManager : MonoBehaviour
         if (!audioSource.isPlaying)
         {
             audioSource.clip = walkingMusic;
-            audioSource.loop = false;
+            audioSource.loop = isLoop;
             audioSource.volume = volume;
             audioSource.Play();
         }

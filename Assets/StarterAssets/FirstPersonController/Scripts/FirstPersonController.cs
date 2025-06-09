@@ -119,7 +119,9 @@ namespace StarterAssets
 
 			// Lock cursor
 			Cursor.lockState = CursorLockMode.Locked;
-    		Cursor.visible = false;
+			Cursor.visible = false;
+
+			_input.sprint = false;
 		}
 
 		private void Update()

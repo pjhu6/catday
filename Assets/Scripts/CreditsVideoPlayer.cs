@@ -3,7 +3,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 
 
-public class IntroVideoPlayer : MonoBehaviour
+public class CreditsVideoPlayer : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
     public Image loadingImage;
@@ -18,7 +18,7 @@ public class IntroVideoPlayer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("VideoPlayer is not assigned in IntroVideoPlayer.");
+            Debug.LogError("VideoPlayer is not assigned in CreditsVideoPlayer.");
         }
     }
 
@@ -31,7 +31,7 @@ public class IntroVideoPlayer : MonoBehaviour
     private void OnVideoEnd(VideoPlayer vp)
     {
         // Load MainScene after the video ends
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MenuScene");
     }
 
     void OnDestroy()

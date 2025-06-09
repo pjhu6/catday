@@ -19,6 +19,10 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
+        if (!FindObjectOfType<IntroPlayer>().IsIntroFinished())
+        {
+            return;
+        }
         // Move the entire GridManager (and its children) downward in world space
         float moveAmount = moveSpeed * Time.deltaTime;
         scoreText.text = score.ToString();
@@ -26,7 +30,7 @@ public class GridManager : MonoBehaviour
 
         if (score >= targetScore)
         {
-            WinGame();
+            StartCoroutine(WinGame());
         }
     }
 
@@ -135,8 +139,9 @@ public class GridManager : MonoBehaviour
         moveSpeed = originalSpeed;
     }
 
-    private void WinGame()
+    private IEnumerator WinGame()
     {
+        yield return new WaitForSeconds(0.5f);
         MissionManager.Instance.CompleteMission("crossy_roads");
         SceneManager.LoadScene("MainScene");
     }

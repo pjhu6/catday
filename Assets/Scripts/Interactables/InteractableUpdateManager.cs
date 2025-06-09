@@ -88,19 +88,17 @@ public class InteractableManager : MonoBehaviour
 
     void CheckForClick(AbstractInteractable closestInteractable)
     {
-        // Check for click input
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            // Check if the interactable is on screen
+            Vector3 viewportPos = Camera.main.WorldToViewportPoint(closestInteractable.transform.position);
+            bool isOnScreen = viewportPos.z > 0 &&
+                            viewportPos.x > 0 && viewportPos.x < 1 &&
+                            viewportPos.y > 0 && viewportPos.y < 1;
+
+            if (isOnScreen)
             {
-                if (hit.collider.TryGetComponent<AbstractInteractable>(out var interactable))
-                {
-                    if (closestInteractable.Equals(interactable))
-                    {
-                        interactable.Click();
-                    }
-                }
+                closestInteractable.Click();
             }
         }
     }

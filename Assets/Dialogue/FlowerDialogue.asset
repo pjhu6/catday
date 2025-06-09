@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speakerName: Cat
-    line: I love flowers!^ I love the way they gently sway in the wind.^ I love how
-      they color the world.
+    line: I love flowers!^ I love the way they gently sway in the wind,^  how they
+      paint the world.
   - speakerName: Cat
-    line: And how they look strangely edible.
+    line: And how they look strangely delicious.
   - speakerName: Cat
     line: 2/10.
   - speakerName: Cat
